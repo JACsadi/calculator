@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+ <meta charset = "UTF-8">
+ <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+ <meta http-equiv="X-UA-Compatible" content="ie=edge">
+ <style> *, ::after* , ::before* {
+    box-sizing: border-box;
+    font-family: sans-serif;
+    font-weight: normal;  
+}
+body {
+    padding: 0;
+    margin: 0;
+    background-image: url("https://media.istockphoto.com/id/178895760/photo/an-abstract-blue-pattern-with-numbers.jpg?s=1024x1024&w=is&k=20&c=CyonqbaxwbfKZvTEnkFBhaDrq7bYgzb5k4GflWUthU0=");
+}
+.cal {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    min-height: 100vh;
+    grid-template-columns: repeat(4, 100px);
+    grid-template-rows: minmax(120px, auto) repeat(6, 100px);
+}
+.cal > button {
+    cursor: pointer;
+    font-size: 2rem;
+    border: 1px solid black;
+    outline: none;
+    background-color: rgba(222, 222, 222, .75);
+}
+.cal > button:hover {
+    background-color: rgba(222, 222, 222, 1);
+}
+.span-two {
+    grid-column: span 2;
+}
+.screen {
+    grid-column: 1 / -1;
+    background-color: rgba(0,0,0,1);
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 10px;
+    word-wrap: breal-word;
+    word-break: break-all;
+}
+.screen .upper {
+    color: rgba(255, 255, 255, .75);
+    font-size: 1.5rem;
+}
+.screen .bottom {
+    color: rgba(255, 255, 255, 1);
+    font-size: 3rem;
+}
+#red {
+    background-color: rgb(200, 11, 11, .85);
+}
+#red:hover, #red.active {
+    background-color: rgb(200, 11, 11, 1);
+}
+#brown {
+    background-color: rgba(48, 43, 42, 1);
+    color: rgba(222, 202, 202, .75);
+}
+#brown:hover, #brown.active {
+    background-color: rgb(48, 3,0, 1);
+    color: white;
+}
+#green {
+    background-color: rgba(19, 113, 72, 0.85);
+}
+#green:hover, #green.active {
+    background-color: rgba(19, 113, 72, 1);
+}
+#dark {
+    background-color: rgba(125, 121, 121, 0.85);
+}
+#dark:hover, #dark.active {
+    background-color: rgba(125, 121, 121, 1);
+} </style>
+    </head>
+    <body>
+        <div class="cal">
+        <div class="screen">
+            <div Data-old class="upper"></div>
+            <div Data-new class="bottom"></div>
+        </div>
+            <button Data-backward class="span-two"  id="brown"><</button>
+            <button Data-forward class="span-two"  id="brown">></button>
+            <button Data-ac class="span-two"  id="red">AC</button>
+            <button Data-del  id="red">DEL</button>
+            <button Data-op  id="dark">+</button>
+            <button Data-num  id="brown">1</button>
+            <button Data-num  id="brown">2</button>
+            <button Data-num  id="brown">3</button>
+            <button Data-op  id="dark">-</button>
+            <button Data-num  id="brown">4</button>
+            <button Data-num  id="brown">5</button>
+            <button Data-num  id="brown">6</button>
+            <button Data-op  id="dark">*</button>
+            <button Data-num  id="brown">7</button>
+            <button Data-num  id="brown">8</button>
+            <button Data-num  id="brown">9</button>
+            <button Data-op  id="dark">/</button>
+            <button Data-num  id="brown">0</button>
+            <button Data-num  id="brown">.</button>
+            <button Data-equ  id="green" class="span-two">=</button>
+        </div>
+        <script>
+            class calcu {
+            constructor(oldTextElement, newTextElement) {
+                this.oldTextElement = oldTextElement;
+                this.newTextElement = newTextElement;
+                this.clear()   
+            }
+            clear() {
+                this.old = ""
+                this.new = ""
+                this.operation = ""
+                this.newHistory = []
+                this.oldHistory = []
+                this.page = -1;
+            }
+            del() {
+                if(this.new == "") {
+                    this.new = this.old.toString()
+                    this.old = ""
+                    this.operation = ""
+                    return
+                } else {
+                this.new = this.new.substring(0, this.new.length-1);
+                } 
+            }
+            appendNumber(number) {
+                if(number == "." && this.new.includes(".")) {
+                    return
+                } else if(this.new.length == 0 && number == 0) {
+                    return
+                } else {
+            this.new = this.new.toString() + number.toString()
+            if( this.operation.length == 0) {
+                this.old = ""
+            } }
+            }
+            selectOperation(ope) {
+            this.compute(ope);
+          }
+            compute(x) {
+                if(this.new == "") {
+                    this.operation = x
+                    return
+                } else {
+                if(this.operation == "") {
+                    this.old = this.new
+                    this.new = ""
+                    this.operation = x 
+                    return 
+                   };
+                   this.newHistory.unshift(`${this.old} ${this.operation} ${this.new}`)
+                   console.log(this.newHistory[0])
+                     if(this.operation == "+") {
+                     this.old = Number(this.old) + Number(this.new)
+                     } else if(this.operation == "-") {
+                         this.old = Number(this.old) - Number(this.new)
+                         } else if(this.operation == "*") {
+                             this.old = Number(this.old) * Number(this.new)
+                             } else if(this.operation == "/") {
+                                 this.old = Number(this.old) / Number(this.new)
+                                 }
+                    this.operation = x
+                    this.new = ""
+                    this.oldHistory.unshift(`${this.old}`)
+                    console.log(this.oldHistory)
+                                }
+            }
+            goBack() {
+             if(this.page < this.newHistory.length - 1) {
+                this.page++
+                calcula.oldTextElement.innerText = calcula.oldHistory[this.page];
+                calcula.newTextElement.innerText = calcula.newHistory[this.page];
+                return
+             }
+            }
+            goForward() {
+                if(this.page > 0) {
+                    this.page--;
+                 calcula.oldTextElement.innerText = calcula.oldHistory[this.page];
+                calcula.newTextElement.innerText = calcula.newHistory[this.page];
+                return
+                }
+                this.output()
+            }
+            output() {
+                this.page = -1;
+           this.newTextElement.innerText = this.new
+           if(this.old.length < 1) {
+            this.oldTextElement.innerText = ""
+           } else {
+           this.oldTextElement.innerText = `${this.old} ${this.operation}`
+            }}
+        }
+        const numButtons = document.querySelectorAll("[Data-num]")
+        const opButtons = document.querySelectorAll("[Data-op]")
+        const equButton = document.querySelector("[Data-equ]")
+        const acButton = document.querySelector("[Data-ac]")
+        const delButton = document.querySelector("[Data-del]")
+        const oldTextElement = document.querySelector("[Data-old]")
+        const newTextElement = document.querySelector("[Data-new]")
+        const backward = document.querySelector("[Data-backward]")
+        const forward = document.querySelector("[Data-forward]")
+        
+        const calcula = new calcu(oldTextElement, newTextElement)
+        
+        numButtons.forEach( a => a.addEventListener("click", () => {
+            calcula.appendNumber(a.innerText)
+            calcula.output()
+        }))
+        acButton.addEventListener("click", () => {
+            calcula.clear()
+            calcula.output()
+        })
+        delButton.addEventListener("click", () => {
+            calcula.del();
+            calcula.output()
+        })
+        opButtons.forEach( a => a.addEventListener("click", () => {
+            calcula.selectOperation(a.innerText);
+            calcula.output();
+        }))
+        equButton.addEventListener("click", () => {
+            calcula.compute("");
+            calcula.output()
+        })
+        backward.addEventListener("click", () => {
+            if(calcula.newHistory.length == 0) {
+                return
+            } else {
+              calcula.goBack()
+            }
+            })
+        forward.addEventListener("click", () => {
+                calcula.goForward()
+            })
+        
+        window.addEventListener("keydown", (a) => {
+            console.log(a.key)
+            if(!isNaN(a.key)) {
+                // calcula.appendNumber(a.key)
+                // calcula.output()
+                numButtons.forEach(b => {
+                    if(a.key == b.innerText) {
+                        b.click();
+                        b.classList.add("active");
+                        setTimeout(function() { 
+                            b.classList.remove("active");
+                          }, 300);
+                    }
+                })
+            } else if(/[\+\-\/\*]/.test(a.key)) {
+                // calcula.selectOperation(a.key);
+                // calcula.output();
+                opButtons.forEach(b => {
+                    if(a.key == b.innerText) {
+                        b.click();
+                        b.classList.add("active");
+                        setTimeout(function() { 
+                            b.classList.remove("active");
+                          }, 400);
+                        }
+                    })
+            } else if(a.key == "=" || a.key == "Enter") {
+                a.preventDefault();
+                equButton.click();
+                equButton.classList.add("active");
+                setTimeout(function() { 
+                    equButton.classList.remove("active");
+                  }, 500);
+            } else if(a.key == "Backspace") {
+                a.preventDefault();
+                delButton.click();
+                delButton.classList.add("active");
+                setTimeout(function() { 
+                    delButton.classList.remove("active");
+                  }, 600);
+            } else if(a.key == "ArrowLeft") {
+                a.preventDefault();
+                backward.click();
+                backward.classList.add("active");
+                setTimeout(function() { 
+                    backward.classList.remove("active");
+                  }, 500);
+            } else if(a.key == "ArrowRight") {
+                a.preventDefault();
+                forward.click();
+                forward.classList.add("active");
+                setTimeout(function() { 
+                    forward.classList.remove("active");
+                  }, 500);
+            } 
+            })
+         
+        
+         </script>
+    </body>
+
+</html>

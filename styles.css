@@ -1,0 +1,76 @@
+*, ::after* , ::before* {
+    box-sizing: border-box;
+    font-family: sans-serif;
+    font-weight: normal;  
+}
+body {
+    padding: 0;
+    margin: 0;
+    background-image: url("https://media.istockphoto.com/id/178895760/photo/an-abstract-blue-pattern-with-numbers.jpg?s=1024x1024&w=is&k=20&c=CyonqbaxwbfKZvTEnkFBhaDrq7bYgzb5k4GflWUthU0=");
+}
+.cal {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+    min-height: 100vh;
+    grid-template-columns: repeat(4, 100px);
+    grid-template-rows: minmax(120px, auto) repeat(6, 100px);
+}
+.cal > button {
+    cursor: pointer;
+    font-size: 2rem;
+    border: 1px solid black;
+    outline: none;
+    background-color: rgba(222, 222, 222, .75);
+}
+.cal > button:hover {
+    background-color: rgba(222, 222, 222, 1);
+}
+.span-two {
+    grid-column: span 2;
+}
+.screen {
+    grid-column: 1 / -1;
+    background-color: rgba(0,0,0,1);
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 10px;
+    word-wrap: breal-word;
+    word-break: break-all;
+}
+.screen .upper {
+    color: rgba(255, 255, 255, .75);
+    font-size: 1.5rem;
+}
+.screen .bottom {
+    color: rgba(255, 255, 255, 1);
+    font-size: 3rem;
+}
+#red {
+    background-color: rgb(200, 11, 11, .85);
+}
+#red:hover, #red.active {
+    background-color: rgb(200, 11, 11, 1);
+}
+#brown {
+    background-color: rgba(48, 43, 42, 1);
+    color: rgba(222, 202, 202, .75);
+}
+#brown:hover, #brown.active {
+    background-color: rgb(48, 3,0, 1);
+    color: white;
+}
+#green {
+    background-color: rgba(19, 113, 72, 0.85);
+}
+#green:hover, #green.active {
+    background-color: rgba(19, 113, 72, 1);
+}
+#dark {
+    background-color: rgba(125, 121, 121, 0.85);
+}
+#dark:hover, #dark.active {
+    background-color: rgba(125, 121, 121, 1);
+}
